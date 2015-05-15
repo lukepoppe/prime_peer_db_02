@@ -19,12 +19,12 @@ router.post('/', function(req, res, next) {
 });
 
 /* GET /assignments/id */
-router.get('/:id', function(req, res, next) {
-  assignments.findById(req.params.id, function (err, assignment) {
-    if (err) return next(err);
-    res.json(assignment);
-  });
-});
+//router.get('/:id', function(req, res, next) {
+//  assignments.findById(req.params.id, function (err, assignment) {
+//    if (err) return next(err);
+//    res.json(assignment);
+//  });
+//});
 
 /* PUT /assignments/:id */
 router.put('/:id', function(req, res, next) {
@@ -41,6 +41,35 @@ router.delete('/:id', function(req, res, next) {
     res.json(assignment);
   });
 });
+
+router.get('/search', function(req, res, next) {
+  console.log(req.query.dateOne);
+  assignments.find({name: new RegExp(req.query.name, 'i'), date_completed: {$gte: req.query.dateOne, $lte: req.query.dateTwo}}, null,
+      {
+        sort:{//Sort by number DESC, can also use date, or any other fiel
+          name: req.query.sortOrder
+        }
+      }
+      ,function (err, assignment) {
+        if (err) return next(err);
+        res.json(assignment);
+      });
+});
+
+//router.get('/search/:name', function(req, res, next) {
+//    console.log("Request body: ",req);
+//    assignments.find({name: new RegExp(req.params.name, 'i')},
+//        null,
+//        {
+//            sort: {
+//                name: req.query.sortOrder
+//            }
+//        },
+//        function (err, assignment) {
+//            if (err) return next(err);
+//            res.json(assignment);
+//        });
+//});
 
 console.log('assignments route loaded');
 module.exports = router;

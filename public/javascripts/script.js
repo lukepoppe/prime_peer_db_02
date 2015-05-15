@@ -1,3 +1,4 @@
+
 var monthNames = [
     "January", "February", "March",
     "April", "May", "June", "July",
@@ -11,6 +12,11 @@ var $dateEditor;
 var $editPanel;
 var $editorSubmit;
 
+var order = 1;
+var searchName;
+var dateOne;
+var dateTwo;
+
 $(document).ready(function(){
     $container = $('.js-assignments');
     $editPanel = $('.js-editPanel');
@@ -21,15 +27,20 @@ $(document).ready(function(){
 
     getData();
     assignClicks();
+
+    console.log('searchName', searchName)
 });
 
 function getData(){
+
     $.ajax({
         url: '/assignments',
         data: {},
         method: 'get',
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
+
+            console.log(data);
             clearData();
             processData(data);
         },
@@ -91,7 +102,6 @@ function clearData(){
 }
 
 function processData(assignments){
-
     for(var i = 0; i< assignments.length; i++){
         var assignment = assignments[i];
 
@@ -114,6 +124,7 @@ function processData(assignments){
 }
 
 function buildAndAppendData(id, name, score, datePicker, day, month, year){
+
     var section = $('<section/>')
         .attr('id', id)
         .attr('data-name', name)
@@ -189,6 +200,57 @@ function assignClicks(){
 
         updateData(data);
     });
+
+    $('body').on('click', '.btn-desc', function(){
+        order = -1;
+
+        if($('#searchField').val() != ""){
+            searchName = $('#searchField').val();
+        }
+        //sort(name, order);
+    });
+
+    $('body').on('click', '.btn-asc', function(){
+        order = 1;
+        if($('#searchField').val() != ""){
+            searchName= $('#searchField').val();
+        }
+        //sort(name, order);
+    });
+
+    $('body').on('click', '.search', function(){
+        $('body').on('click', '.btn-desc', function(){
+            order = -1;
+            if($('#searchField').val() != ""){
+                searchName= $('#searchField').val();
+            }
+            //sort(name, order);
+        });
+
+        $('body').on('click', '.btn-asc', function(){
+            order = 1;
+            if($('#searchField').val() != ""){
+                searchName= $('#searchField').val();
+            }
+            //sort(name, order);
+        });
+
+        dateOne = $('#date_start').val();
+        dateTwo = $('#date_end').val();
+        if(dateOne == "" & dateTwo == ""){
+            dateOne = '1900-01-01';
+            dateTwo = '2020-01-01';
+        } else if (dateTwo == "") {
+            dateTwo = '2020-01-01';
+        } else if (dateOne == "") {
+            dateOne = '1900-01-01';
+        }
+        console.log(dateOne);
+        console.log(dateTwo);
+        console.log(order);
+        console.log(searchName);
+        sort(searchName, order, dateOne, dateTwo);
+    });
 }
 
 function showEditor(id,name, score, date){
@@ -207,4 +269,31 @@ function clearEditor(){
     $scoreEditor.val('');
     $dateEditor.val('');
     $editPanel.slideUp().delay().removeClass('change');
+}
+
+function sort(searchName, order, dateOne, dateTwo){
+    var search = {sortOrder: order, dateOne: dateOne, dateTwo: dateTwo};
+    if (searchName)
+        search.name = searchName;
+
+    $.ajax({
+        url: '/assignments/search',
+        method: 'get',
+        dataType: 'json',
+        data: search,
+        success: function(data, textStatus, jqXHR){
+            console.log(data);
+            // clear form
+            clearData();
+            // get new data and update
+            processData(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+            console.log(textStatus,errorThrown);
+        },
+        complete: function(jqXHR, textStatus){
+            console.log("sort() Ajax Get Complete:", textStatus);
+        }
+    });
+
 }

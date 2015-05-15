@@ -28,43 +28,51 @@
     <h1>List of assignments</h1>
 
     <p>Click "Delete" to remove an entry. Click "Edit" to change it's properties. To add a new entry, click "Create" in the navigation.</p>
+    <div class="sort">
+        <label for='searchField'>Search by Name: </label><input id='searchField' type='text'><button class='btn-desc' data-id='-1'>Sort Descending</button><button class='btn-asc' data-id='1'>Sort Ascending</button>
+        </br>
+        <input name="date_completed" id="date_start" type="date" required="required"> Beginning Date
+        <input name="date_completed" id="date_end" type="date" required="required"> End Date
+        </br>
+        <button class="search">Search</button>
+    </div>
     <div class="row">
-    <div class="col js-assignments"></div>
-    <div class="col editPanel js-editPanel hidden">
-        <div class="row">
-            <div class="col col-1of2">
-                <label for="name">Name:</label>
+        <div class="col js-assignments"></div>
+        <div class="col editPanel js-editPanel hidden">
+            <div class="row">
+                <div class="col col-1of2">
+                    <label for="name">Name:</label>
+                </div>
+                <div class="col">
+                    <input name="name" id="name" type="text" required="required">
+                </div>
             </div>
-            <div class="col">
-                <input name="name" id="name" type="text" required="required">
+            <div class="row">
+                <div class="col col-1of2">
+                    <label for="score">score:</label>
+                </div>
+                <div class="col">
+                    <input name="score" id="score" type="number" required="required" step="any">
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col col-1of2">
-                <label for="score">score:</label>
+            <div class="row">
+                <div class="col col-1of2">
+                    <label for="date_completed">Date Completed:</label>
+                </div>
+                <div class="col">
+                    <input name="date_completed" id="date_completed" type="date" required="required">
+                </div>
             </div>
-            <div class="col">
-                <input name="score" id="score" type="number" required="required" step="any">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-1of2">
-                <label for="date_completed">Date Completed:</label>
-            </div>
-            <div class="col">
-                <input name="date_completed" id="date_completed" type="date" required="required">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col col-1of2">
-                &nbsp;
-            </div>
-            <div class="col">
-                <input type="submit" value="Submit" id="submit">
+            <div class="row">
+                <div class="col col-1of2">
+                    &nbsp;
+                </div>
+                <div class="col">
+                    <input type="submit" value="Submit" id="submit">
+                </div>
             </div>
         </div>
     </div>
-</div>
 </main>
 
 <footer>
