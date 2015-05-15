@@ -234,6 +234,9 @@ function assignClicks(){
             }
             //sort(name, order);
         });
+        if($('#searchField').val() != ""){
+            searchName= $('#searchField').val();
+        }
 
         dateOne = $('#date_start').val();
         dateTwo = $('#date_end').val();
